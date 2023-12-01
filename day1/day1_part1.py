@@ -1,5 +1,5 @@
 
-document = open('day1_input.txt', 'r')
+document = open('day1/day1_input.txt', 'r')
 lines = document.readlines()
 total = 0
 

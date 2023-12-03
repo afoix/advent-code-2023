@@ -1,7 +1,3 @@
-
-    
-
-
 import re
 # contained only 12 red cubes, 13 green cubes, and 14 blue cubes
 document = open('day2/day2_input.txt', 'r')
@@ -35,7 +31,6 @@ def parse_line(line):
         max_dict[k] = max(v)
     
     return max_dict["red"] *  max_dict["green"] * max_dict["blue"]
-    
 
 power_sets = 0
 for line in lines:

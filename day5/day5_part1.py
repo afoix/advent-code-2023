@@ -1,5 +1,6 @@
 import re
 document = open('day4/day4_input.txt', 'r')
+#document = open('day4/input_alex.txt', 'r')
 lines = document.readlines()
 
 def match_winners(ws, gs):

@@ -47,3 +47,20 @@ for i, nums in enumerate(numbers):
 
 print(sum(engine_num))
 
+#print([x for x in engine_num if x == 442])
+
+        
+
+# print(numbers)
+# print("------------------")
+# print(symbols)
+# Print one specific match of the regex for numbers
+#print(numbers[1][0].group())
+# Print one specific match of the regex for symbols
+# print(symbols[0][0].groups())
+# print(symbols[0][0].start())
+# print(symbols[0][0].end())
+# print(symbols[0][0].string)
+# print(len(symbols[0][0].string))
+
+    

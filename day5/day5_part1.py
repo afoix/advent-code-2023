@@ -1,38 +1,85 @@
 import re
-document = open('day4/day4_input.txt', 'r')
-#document = open('day4/input_alex.txt', 'r')
+
+document = open('day5/day5_input.txt', 'r')
+#document = open('day5/alex_input.txt', 'r')
+
+class MapRange:
+    def __init__(self, dest_start, src_start, size):
+        self.dest_start = dest_start
+        self.src_start = src_start
+        self.size = size
+
+    def lookup(self, src):
+        if src >= self.src_start and src < (self.src_start + self.size):
+            return self.dest_start + (src - self.src_start)
+        else: 
+            return None
+
+def lookupRangeMap(ranges, src):
+    ret = src
+    for r in ranges:
+        dest = r.lookup(src)
+        if dest:
+            ret = dest
+            break
+    return ret
+
+
+def getLineRanges(line):
+    dest, src, sz = list(map(int, line.split()))
+    return MapRange(dest, src, sz)
+
 lines = document.readlines()
 
-def match_winners(ws, gs):
-    ret = []
-    for g in gs:
-        if g in ws:
-            ret.append(g)
-    return ret
+# get seeds
+seeds = list(map(int, lines[0].split()[1:]))
 
-def score_matches(ws):
-    ret = 1 if len(ws) > 0 else 0 
-    for _ in ws[1:]:
-        ret *= 2
-    return ret
-        
+seed_to_soil = []
+soil_to_fertilizer = []
+fertilizer_to_water = []
+water_to_light = []
+light_to_temperature = []
+temperature_to_humidity = []
+humidity_to_location = []
 
-winners = []
-gottens = []
-matches = []
-scores = []
-for line in lines:
-    groups = re.split('[:|]', line)
-    line_winners = [int(x) for x in re.findall("\d+", groups[1])]
-    line_gottens = [int(x) for x in re.findall("\d+", groups[2])]
-    winners.append(line_winners)
-    gottens.append(line_gottens)
-    matched = match_winners(line_winners, line_gottens)
-    matches.append(matched)
-    scores.append(score_matches(matched))
+for line in lines[1:]:
+    if line.startswith('seed-to-soil'):
+        current_map = seed_to_soil
+    elif line.startswith('soil-to-fertilizer'):
+        current_map = soil_to_fertilizer
+    elif line.startswith('fertilizer-to-water'):
+        current_map = fertilizer_to_water
+    elif line.startswith('water-to-light'):
+        current_map = water_to_light
+    elif line.startswith('light-to-temperature'):
+        current_map = light_to_temperature
+    elif line.startswith('temperature-to-humidity'):
+        current_map = temperature_to_humidity
+    elif line.startswith('humidity-to-location'):
+        current_map = humidity_to_location
+    # skip empty lines
+    elif line == '\n' or not line:
+        continue
+    else:
+        print(line)
+        current_map.append(getLineRanges(line))
 
+# Look up for each seed
+seed_locations = []
+for seed in seeds:
+    soil = lookupRangeMap(seed_to_soil, seed)
+    fertilizer = lookupRangeMap(soil_to_fertilizer, soil)
+    water = lookupRangeMap(fertilizer_to_water, fertilizer)
+    light = lookupRangeMap(water_to_light, water)
+    temperature = lookupRangeMap(light_to_temperature, light)
+    humidity = lookupRangeMap(temperature_to_humidity, temperature)
+    location = lookupRangeMap(humidity_to_location, humidity)
+    seed_locations[seed] = location
 
-print(sum(scores))
+print(min(seed_locations))
 
     
+
+
+
 

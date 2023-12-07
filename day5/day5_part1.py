@@ -14,6 +14,9 @@ class MapRange:
             return self.dest_start + (src - self.src_start)
         else: 
             return None
+        
+    def __str__(self):
+        return "dest_start: {dest_start}, src_start: {src_start}, size: {size}".format(dest_start=self.dest_start, src_start=self.src_start, size=self.size)
 
 def lookupRangeMap(ranges, src):
     ret = src

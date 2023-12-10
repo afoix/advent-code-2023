@@ -1,48 +1,18 @@
-#!/usr/bin/env python3
+def diff_extrapolate_line(numbers_line):
+    if all(value == 0 for value in numbers_line):
+        return 0
+    else: 
+        sihfted_number = numbers_line[1:]
+        pairwise_list = list(zip(numbers_line, sihfted_number))
+        diff = []
+        for x, y in pairwise_list:
+            diff.append(y - x)
 
-from rich import print
+        # recursive, return an extrapolate value
+        extrapolate = diff_extrapolate_line(diff)
+        return extrapolate + numbers_line[-1]
 
-
-def load_input(filename):
-    with open(f"day9_input.txt") as f:
-        return f.read()
-
-def parse_file_contents(file_contents: str) -> list[list[int]]:
-    data = file_contents.strip().splitlines()
-    return [[int(i) for i in line.split(" ")] for line in data]
-
-
-def calculate_next_value(data: list[int]) -> tuple[int, int]:
-    diffs = [(b - a) for a, b in zip(data[:-1], data[1:])]
-    delta = 0 if all(x == 0 for x in diffs) else calculate_next_value(diffs)[1]
-    return data[-1] + diffs[-1] + delta, diffs[-1] + delta
-
-
-def part1(file_contents: str) -> int:
-    return sum(calculate_next_value(line)[0] for line in parse_file_contents(file_contents))
-
-
-def part2(file_contents: str) -> int:
-    return sum(calculate_next_value(line[::-1])[0] for line in parse_file_contents(file_contents))
-
-
-if __name__ == "__main__":
-    data = load_input(__file__)
-    answer1 = part1(data)
-    answer2 = part2(data)
-    print(f"The answer is: {answer1=}, {answer2=}")
-
-
-test_data = """
-0 3 6 9 12 15
-1 3 6 10 15 21
-10 13 16 21 30 45
-"""
-
-
-def test_part1():
-    assert part1(test_data) == 114
-
-
-def test_part2():
-    assert part2(test_data) == 2
+with open('day9/day9_input.txt', 'r') as f:
+    lines = list(map(lambda x: list(map(int, x.split())), f.readlines()))
+    result = [diff_extrapolate_line(line) for line in lines]
+    print('Part 1: ' + str(sum(result)))
